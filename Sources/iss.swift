@@ -33,7 +33,7 @@ func HTMLParse(from: String) -> String {
     }
     
     do {
-        let document: Document = try SwiftSoup.parse(contents)
+        let _: Document = try SwiftSoup.parse(contents)
     } catch {
         print("HTML not found")
     }
