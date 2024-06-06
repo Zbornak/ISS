@@ -68,7 +68,7 @@ func getCoords() {
     
     let formattedAltitude = String(format: "%.2f", data.altitude)
     print("The ISS is currently at latitude: \(data.latitude), longitude: \(data.longitude).")
-    print("That means it is now currently over... at an altitude of \(formattedAltitude) kilometers.")
+    print("That means it is now currently over... at an altitude of \(formattedAltitude) km.")
 }
 
 @available(macOS 12, *)
