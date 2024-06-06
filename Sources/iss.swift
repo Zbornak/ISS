@@ -19,6 +19,7 @@ struct Iss: ParsableCommand {
     
     mutating func run() throws {
         getCoords()
+        getSpeed()
     }
 }
 
@@ -81,6 +82,7 @@ func getSpeed() {
     
     let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
     
-    print("The ISS is currently travelling at \(data.speed) km/h.")
+    let formattedSpeed = String(format: "%.2f", data.speed)
+    print("The ISS is currently travelling at \(formattedSpeed) km/h.")
 }
 
