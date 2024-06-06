@@ -6,6 +6,7 @@
 //
 
 import ArgumentParser
+import CoreLocation
 import Figlet
 import Foundation
 import SGPKit
@@ -61,7 +62,25 @@ func getCoords() {
     
     let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
     
-    // print(data.altitude)
-    // print(data.speed)
-    print("The ISS is currently at latitude: \(data.latitude), longitude: \(data.longitude)")
+    let geolocation = CLLocationCoordinate2D(latitude: data.latitude, longitude: data.longitude)
+    
+    let formattedAltitude = String(format: "%.2f", data.altitude)
+    print("The ISS is currently at latitude: \(data.latitude), longitude: \(data.longitude).")
+    print("That means it is now currently over... at an altitude of \(formattedAltitude) kilometers.")
 }
+
+@available(macOS 12, *)
+func getSpeed() {
+    let dataArray = getTLE()
+    let title = dataArray[0]
+    let firstLine = dataArray[1]
+    let secondLine = dataArray[2]
+    
+    let tle = TLE(title: title, firstLine: firstLine, secondLine: secondLine)
+    let interpreter = TLEInterpreter()
+    
+    let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
+    
+    print("The ISS is currently travelling at \(data.speed) km/h.")
+}
+
