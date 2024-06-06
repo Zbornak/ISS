@@ -15,7 +15,7 @@ struct Iss: ParsableCommand {
     static let configuration = CommandConfiguration(abstract: "A cli which lets you know the current position of the International Space Station, as well as who is on board and other interesting random trivia", version: "1.0.0")
     
     mutating func run() throws {
-        print(HTMLParse(from: "http://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE"))
+        print("Hello")
     }
 }
 
@@ -42,6 +42,7 @@ func HTMLParse(from: String) -> String {
 }
 
 func getTLE() -> [String] {
-    
-    return [""]
+    let rawString = HTMLParse(from: "http://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE")
+    let newArray = rawString.components(separatedBy: "\r\n")
+    return newArray
 }
