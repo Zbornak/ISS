@@ -84,6 +84,6 @@ func getSpeed() {
     let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
     
     let formattedSpeed = String(format: "%.2f", data.speed)
-    print("The ISS is currently travelling at a speed of \(formattedSpeed) km/h.")
+    print("The ISS is currently travelling at a speed of \(formattedSpeed) km/h, or \((Float(formattedSpeed) ?? 0) * 0.0002777778) km/s.")
 }
 
