@@ -64,11 +64,32 @@ func getCoords() {
     
     let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
     
-    let location = CLLocation(latitude: data.latitude, longitude: data.longitude)
+    let latitude = data.latitude
+    let longitude = data.longitude
+    var currentCity = ""
+    var currentCountry = ""
+    
+    let geoCoder = CLGeocoder()
+    let location = CLLocation(latitude: latitude, longitude: longitude)
+    
+    geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) in
+        guard let placemark = placemarks?.first else {
+            return
+        }
+        
+        if let city = placemark.locality {
+            currentCity = city
+        }
+        
+        if let country = placemark.country {
+            currentCountry = country
+        }
+        
+    })
     
     let formattedAltitude = String(format: "%.2f", data.altitude)
-    print("The ISS is currently at latitude: \(data.latitude), longitude: \(data.longitude).")
-    print("That means it is now currently over... at an altitude of \(formattedAltitude) km.")
+    print("The ISS is at latitude: \(data.latitude), longitude: \(data.longitude).")
+    print("That means it is currently over \(currentCity), \(currentCountry) at an altitude of \(formattedAltitude) km.")
 }
 
 @available(macOS 12, *)
@@ -84,6 +105,6 @@ func getSpeed() {
     let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
     
     let formattedSpeed = String(format: "%.2f", data.speed)
-    print("The ISS is currently travelling at a speed of \(formattedSpeed) km/h, or \((Float(formattedSpeed) ?? 0) * 0.0002777778) km/s.")
+    print("The ISS is travelling at a speed of \(formattedSpeed) km/h, or \((Float(formattedSpeed) ?? 0) * 0.0002777778) km/s.")
 }
 
