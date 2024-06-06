@@ -21,6 +21,7 @@ struct Iss: ParsableCommand {
     mutating func run() throws {
         getCoords()
         getSpeed()
+        getAltitude()
     }
 }
 
@@ -84,13 +85,10 @@ func getCoords() {
         if let country = placemark.country {
             currentCountry = country
         }
-        
     })
     
-    let formattedAltitude = String(format: "%.2f", data.altitude)
     print("The ISS is at latitude: \(data.latitude), longitude: \(data.longitude).")
-    print("Currently over: \(currentCity), \(currentCountry).")
-    print("Altitude: \(formattedAltitude) km.")
+    print("It is currently over: \(currentCity), \(currentCountry).")
 }
 
 @available(macOS 12, *)
@@ -107,5 +105,21 @@ func getSpeed() {
     
     let formattedSpeed = String(format: "%.2f", data.speed)
     print("The ISS is travelling at a speed of \(formattedSpeed) km/h, or \((Float(formattedSpeed) ?? 0) * 0.0002777778) km/s.")
+}
+
+@available(macOS 12, *)
+func getAltitude() {
+    let dataArray = getTLE()
+    let title = dataArray[0]
+    let firstLine = dataArray[1]
+    let secondLine = dataArray[2]
+    
+    let tle = TLE(title: title, firstLine: firstLine, secondLine: secondLine)
+    let interpreter = TLEInterpreter()
+    
+    let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
+    
+    let formattedAltitude = String(format: "%.2f", data.altitude)
+    print("The ISS is travelling at an altitude of \(formattedAltitude) km")
 }
 
