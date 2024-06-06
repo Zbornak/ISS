@@ -9,6 +9,7 @@ import ArgumentParser
 import CoreLocation
 import Figlet
 import Foundation
+import MapKit
 import SGPKit
 import SwiftSoup
 
@@ -63,7 +64,7 @@ func getCoords() {
     
     let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
     
-    let geolocation = CLLocationCoordinate2D(latitude: data.latitude, longitude: data.longitude)
+    let location = CLLocation(latitude: data.latitude, longitude: data.longitude)
     
     let formattedAltitude = String(format: "%.2f", data.altitude)
     print("The ISS is currently at latitude: \(data.latitude), longitude: \(data.longitude).")
