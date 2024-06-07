@@ -124,6 +124,7 @@ func getRandomISSFact() {
 }
 
 func getPersonnel() {
+    print("The following personnel are currently aboard the ISS:".lightGreen.bold)
     do {
         let html = HTMLParse(from: "https://en.wikipedia.org/wiki/List_of_crew_of_the_International_Space_Station")
         let doc: Document = try SwiftSoup.parse(html)
@@ -132,9 +133,9 @@ func getPersonnel() {
             return
         }
         
-        let links: Elements = try body.getElementsByTag("a")
+        let links: Elements = try body.getElementsByTag("b")
         for link in links {
-            print(try link.text())
+            print(try link.text().lightGreen.bold)
         }
         
     } catch Exception.Error(let type, let message) {
