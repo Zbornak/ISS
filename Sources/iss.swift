@@ -135,7 +135,9 @@ func getPersonnel() {
         
         let links: Elements = try body.getElementsByTag("b")
         for link in links {
-            print(try link.text().lightGreen.bold)
+            if try link.text().count > 10 && !link.text().hasPrefix("list") {
+                print(try link.text().lightGreen.bold)
+            }
         }
         
     } catch Exception.Error(let type, let message) {
