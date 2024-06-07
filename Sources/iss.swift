@@ -67,21 +67,23 @@ func getCoords() {
     let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
     
     print("The ISS is at latitude: \(data.latitude), longitude: \(data.longitude).".lightGreen.bold)
+    lookUpCurrentLocation(lat: data.latitude, long: data.longitude)
 }
 
-func lookUpCurrentLocation(lat: Double, long: Double, completionHandler: @escaping (CLPlacemark?) -> Void ) {
+func lookUpCurrentLocation(lat: Double, long: Double) {
+    var firstLocation: CLPlacemark?
     let lastLocation = CLLocation(latitude: lat, longitude: long)
     let geocoder = CLGeocoder()
         
     geocoder.reverseGeocodeLocation(lastLocation, completionHandler: { (placemarks, error) in
         if error == nil {
-            let firstLocation = placemarks?[0]
-            completionHandler(firstLocation)
-            print("It is currently over \(firstLocation?.locality ?? "error"), \(firstLocation?.country ?? "error").".lightGreen.bold)
+            firstLocation = placemarks?[0]
         } else {
-            completionHandler(nil)
+            return
         }
     })
+    
+    print("It is currently over \(firstLocation?.locality ?? "error"), \(firstLocation?.country ?? "error").".lightGreen.bold)
 }
 
 @available(macOS 12, *)
