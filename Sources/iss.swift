@@ -129,3 +129,11 @@ func getAltitude() {
     print("The ISS is travelling at an altitude of \(formattedAltitude) km".lightGreen.bold)
 }
 
+func getRandomISSFact() {
+    
+}
+
+func getPersonnel() {
+    
+}
+
