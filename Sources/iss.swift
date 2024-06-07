@@ -66,35 +66,22 @@ func getCoords() {
     
     let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
     
-    let latitude = data.latitude
-    let longitude = data.longitude
-    let locality = getLocality(lat: data.latitude, long: data.longitude)
-    
     print("The ISS is at latitude: \(data.latitude), longitude: \(data.longitude).".lightGreen.bold)
-    print(locality)
 }
 
-func getLocality(lat: Double, long: Double) -> String {
-    let currentCity = ""
-    let currentCountry = ""
-    let geoCoder = CLGeocoder()
-    let location = CLLocation(latitude: lat, longitude: long)
-    
-    geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) in
-        guard let placemark = placemarks?.first else {
-            return
-        }
+func lookUpCurrentLocation(lat: Double, long: Double, completionHandler: @escaping (CLPlacemark?) -> Void ) {
+    let lastLocation = CLLocation(latitude: lat, longitude: long)
+    let geocoder = CLGeocoder()
         
-        if let city = placemark.locality {
-            let currentCity = city
-        }
-        
-        if let country = placemark.country {
-            let currentCountry = country
+    geocoder.reverseGeocodeLocation(lastLocation, completionHandler: { (placemarks, error) in
+        if error == nil {
+            let firstLocation = placemarks?[0]
+            completionHandler(firstLocation)
+            print("It is currently over \(firstLocation?.locality ?? "error"), \(firstLocation?.country ?? "error").".lightGreen.bold)
+        } else {
+            completionHandler(nil)
         }
     })
-    
-    return "It is currently over: \(currentCity), \(currentCountry).".lightGreen.bold
 }
 
 @available(macOS 12, *)
