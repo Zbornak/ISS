@@ -23,6 +23,7 @@ struct Iss: ParsableCommand {
         getCoords()
         getSpeed()
         getAltitude()
+        getPersonnel()
     }
 }
 
@@ -123,6 +124,15 @@ func getRandomISSFact() {
 }
 
 func getPersonnel() {
-    
+    do {
+        let html = HTMLParse(from: "https://en.wikipedia.org/wiki/List_of_crew_of_the_International_Space_Station")
+        let doc: Document = try SwiftSoup.parse(html)
+        print(try doc.text())
+        
+    } catch Exception.Error(let type, let message) {
+        print(message)
+    } catch {
+        print("error")
+    }
 }
 
