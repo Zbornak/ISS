@@ -127,11 +127,20 @@ func getPersonnel() {
     do {
         let html = HTMLParse(from: "https://en.wikipedia.org/wiki/List_of_crew_of_the_International_Space_Station")
         let doc: Document = try SwiftSoup.parse(html)
-        print(try doc.text())
+        
+        guard let body = doc.body() else {
+            return
+        }
+        
+        let links: Elements = try body.getElementsByTag("a")
+        for link in links {
+            print(try link.text())
+        }
         
     } catch Exception.Error(let type, let message) {
         print(message)
         print(type)
+        
     } catch {
         print("error")
     }
