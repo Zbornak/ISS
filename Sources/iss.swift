@@ -67,6 +67,7 @@ func getCoords() {
     
     let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
     
+    print("i".inverse.lightGreen.bold, terminator: " ")
     print("The ISS is at latitude: \(data.latitude), longitude: \(data.longitude).".lightGreen.bold)
     lookUpCurrentLocation(lat: data.latitude, long: data.longitude)
 }
@@ -84,6 +85,7 @@ func lookUpCurrentLocation(lat: Double, long: Double) {
         }
     })
     
+    print("i".inverse.lightGreen.bold, terminator: " ")
     print("It is currently over \(firstLocation?.locality ?? "error"), \(firstLocation?.country ?? "error").".lightGreen.bold)
 }
 
@@ -100,6 +102,7 @@ func getSpeed() {
     let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
     
     let formattedSpeed = String(format: "%.2f", data.speed)
+    print("i".inverse.lightGreen.bold, terminator: " ")
     print("The ISS is travelling at a speed of \(formattedSpeed) km/h, or \((Float(formattedSpeed) ?? 0) * 0.0002777778) km/s.".lightGreen.bold)
 }
 
@@ -116,6 +119,7 @@ func getAltitude() {
     let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
     
     let formattedAltitude = String(format: "%.2f", data.altitude)
+    print("i".inverse.lightGreen.bold, terminator: " ")
     print("The ISS is travelling at an altitude of \(formattedAltitude) km".lightGreen.bold)
 }
 
@@ -124,6 +128,7 @@ func getRandomISSFact() {
 }
 
 func getPersonnel() {
+    print("i".inverse.lightGreen.bold, terminator: " ")
     print("The following personnel are currently aboard the ISS:".lightGreen.bold)
     do {
         let html = HTMLParse(from: "https://en.wikipedia.org/wiki/List_of_crew_of_the_International_Space_Station")
