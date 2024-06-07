@@ -131,6 +131,7 @@ func getPersonnel() {
         
     } catch Exception.Error(let type, let message) {
         print(message)
+        print(type)
     } catch {
         print("error")
     }
