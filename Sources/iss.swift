@@ -5,6 +5,7 @@
 //  Created by Mark Strijdom on 29/05/2024.
 //
 
+import ANSITerminal
 import ArgumentParser
 import CoreLocation
 import Figlet
@@ -69,7 +70,7 @@ func getCoords() {
     let longitude = data.longitude
     let locality = getLocality(lat: data.latitude, long: data.longitude)
     
-    print("The ISS is at latitude: \(data.latitude), longitude: \(data.longitude).")
+    print("The ISS is at latitude: \(data.latitude), longitude: \(data.longitude).".lightGreen.bold)
     print(locality)
 }
 
@@ -93,7 +94,7 @@ func getLocality(lat: Double, long: Double) -> String {
         }
     })
     
-    return "It is currently over: \(currentCity), \(currentCountry)."
+    return "It is currently over: \(currentCity), \(currentCountry).".lightGreen.bold
 }
 
 @available(macOS 12, *)
@@ -109,7 +110,7 @@ func getSpeed() {
     let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
     
     let formattedSpeed = String(format: "%.2f", data.speed)
-    print("The ISS is travelling at a speed of \(formattedSpeed) km/h, or \((Float(formattedSpeed) ?? 0) * 0.0002777778) km/s.")
+    print("The ISS is travelling at a speed of \(formattedSpeed) km/h, or \((Float(formattedSpeed) ?? 0) * 0.0002777778) km/s.".lightGreen.bold)
 }
 
 @available(macOS 12, *)
@@ -125,6 +126,6 @@ func getAltitude() {
     let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
     
     let formattedAltitude = String(format: "%.2f", data.altitude)
-    print("The ISS is travelling at an altitude of \(formattedAltitude) km")
+    print("The ISS is travelling at an altitude of \(formattedAltitude) km".lightGreen.bold)
 }
 
