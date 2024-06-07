@@ -67,11 +67,17 @@ func getCoords() {
     
     let latitude = data.latitude
     let longitude = data.longitude
-    var currentCity = ""
-    var currentCountry = ""
+    let locality = getLocality(lat: data.latitude, long: data.longitude)
     
+    print("The ISS is at latitude: \(data.latitude), longitude: \(data.longitude).")
+    print(locality)
+}
+
+func getLocality(lat: Double, long: Double) -> String {
+    let currentCity = ""
+    let currentCountry = ""
     let geoCoder = CLGeocoder()
-    let location = CLLocation(latitude: latitude, longitude: longitude)
+    let location = CLLocation(latitude: lat, longitude: long)
     
     geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) in
         guard let placemark = placemarks?.first else {
@@ -79,16 +85,15 @@ func getCoords() {
         }
         
         if let city = placemark.locality {
-            currentCity = city
+            let currentCity = city
         }
         
         if let country = placemark.country {
-            currentCountry = country
+            let currentCountry = country
         }
     })
     
-    print("The ISS is at latitude: \(data.latitude), longitude: \(data.longitude).")
-    print("It is currently over: \(currentCity), \(currentCountry).")
+    return "It is currently over: \(currentCity), \(currentCountry)."
 }
 
 @available(macOS 12, *)
