@@ -19,11 +19,18 @@ import SwiftSoup
 struct Iss: ParsableCommand {
     static let configuration = CommandConfiguration(abstract: "A cli which lets you know the current position of the International Space Station, as well as who is on board and other interesting random trivia", version: "1.0.0")
     
+    @Argument(help: "Choose what ISS information you are looking for.") var request: String
+    
     mutating func run() throws {
-        getCoords()
-        getSpeed()
-        getAltitude()
-        getPersonnel()
+        if request == "location" {
+            getCoords()
+        } else if request == "speed" {
+            getSpeed()
+        } else if request == "altitude" {
+            getAltitude()
+        } else if request == "personnel" {
+            getPersonnel()
+        }
     }
 }
 
