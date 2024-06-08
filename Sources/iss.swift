@@ -37,7 +37,7 @@ struct Iss: ParsableCommand {
         } else if request == "personnel" {
             getPersonnel()
         } else if request == "fact" {
-            print("Here's a fun ISS fact!")
+            getRandomISSFact()
         } else if request == "docked" {
             print("Currently docked...")
         }
@@ -141,7 +141,8 @@ func getAltitude() {
 }
 
 func getRandomISSFact() {
-    
+    let facts: [Fact] = Bundle.main.decode("issfacts.json")
+    print(facts.count)
 }
 
 func getPersonnel() {
