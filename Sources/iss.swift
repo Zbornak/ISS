@@ -37,7 +37,7 @@ struct Iss: ParsableCommand {
         } else if request == "personnel" {
             getPersonnel()
         } else if request == "fact" {
-            getRandomISSFact()
+            getFact()
         } else if request == "docked" {
             print("Currently docked...")
         }
@@ -140,7 +140,7 @@ func getAltitude() {
     print("The ISS is currently orbiting at an altitude of \(formattedAltitude) km".lightGreen.bold)
 }
 
-func getRandomISSFact() {
+func getFact() {
     let facts: [Fact] = Bundle.main.decode("issfacts.json")
     print(facts.count)
 }
