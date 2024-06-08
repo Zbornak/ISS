@@ -156,10 +156,10 @@ func getPersonnel() {
             return
         }
         
-        let links: Elements = try body.getElementsByTag("b")
-        for link in links {
-            if try link.text().count > 10 && !link.text().hasPrefix("list") {
-                print(try link.text().lightGreen.bold)
+        let astronauts: Elements = try body.getElementsByTag("b")
+        for astronaut in astronauts {
+            if try astronaut.text().count > 10 && !astronaut.text().hasPrefix("list") {
+                print(try astronaut.text().lightGreen.bold)
             }
         }
         
@@ -175,5 +175,25 @@ func getPersonnel() {
 func getDocked() {
     print("i".inverse.lightGreen.bold, terminator: " ")
     print("The following vessels are currently docked with the ISS:".lightGreen.bold)
+//    do {
+//        let html = HTMLParse(from: "https://en.wikipedia.org/wiki/International_Space_Station")
+//        let doc: Document = try SwiftSoup.parse(html)
+//        
+//        guard let body = doc.body() else {
+//            return
+//        }
+//        
+//        let vessels: Elements = try body.getElementsByTag("table")
+//        for vessel in vessels {
+//            print(try vessel.text().lightGreen.bold)
+//        }
+//        
+//    } catch Exception.Error(let type, let message) {
+//        print(message)
+//        print(type)
+//        
+//    } catch {
+//        print("error")
+//    }
 }
 
