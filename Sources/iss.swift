@@ -164,7 +164,9 @@ func decode<T: Codable>(_ file: String) -> T {
 
 func getFact() {
     let facts: [Fact] = decode(facts)
-    print(facts.count)
+    let fact = facts.randomElement()
+    print("i".inverse.lightGreen.bold, terminator: " ")
+    print(fact?.description.lightGreen.bold ?? "ISS facts cannot be accessed at this time")
 }
 
 func getPersonnel() {
