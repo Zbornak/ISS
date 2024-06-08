@@ -19,11 +19,11 @@ import SwiftSoup
 struct Iss: ParsableCommand {
     static let configuration = CommandConfiguration(abstract: "A cli which lets you know the current position of the International Space Station, as well as who is on board and other interesting random trivia", version: "1.0.0")
     
-    @Argument(help: "Choose what ISS information you are looking for (location, speed, altitude, personnel or fact)") var request: String
+    @Argument(help: "Choose what ISS information you are looking for (location, speed, altitude, personnel, fact or docked)") var request: String
     
     mutating func validate() throws {
-        guard request == "location" || request == "speed" || request == "altitude" || request == "personnel" || request == "fact" else {
-            throw ValidationError("Please choose a valid request (location, speed, altitude, personnel or fact)")
+        guard request == "location" || request == "speed" || request == "altitude" || request == "personnel" || request == "fact" || request == "docked" else {
+            throw ValidationError("Please choose a valid request (location, speed, altitude, personnel, fact or docked)")
         }
     }
     
@@ -38,6 +38,8 @@ struct Iss: ParsableCommand {
             getPersonnel()
         } else if request == "fact" {
             print("Here's a fun ISS fact!")
+        } else if request == "docked" {
+            print("Currently docked...")
         }
     }
 }
