@@ -85,7 +85,7 @@ func getCoords() {
     let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
     
     print("i".inverse.lightGreen.bold, terminator: " ")
-    print("The ISS is at latitude: \(data.latitude), longitude: \(data.longitude).".lightGreen.bold)
+    print("The ISS is currently at latitude: \(data.latitude), longitude: \(data.longitude).".lightGreen.bold)
     lookUpCurrentLocation(lat: data.latitude, long: data.longitude)
 }
 
@@ -120,7 +120,7 @@ func getSpeed() {
     
     let formattedSpeed = String(format: "%.2f", data.speed)
     print("i".inverse.lightGreen.bold, terminator: " ")
-    print("The ISS is travelling at a speed of \(formattedSpeed) km/h, or \((Float(formattedSpeed) ?? 0) * 0.0002777778) km/s.".lightGreen.bold)
+    print("The ISS is currently travelling at a speed of \(formattedSpeed) km/h, or \((Float(formattedSpeed) ?? 0) * 0.0002777778) km/s.".lightGreen.bold)
 }
 
 @available(macOS 12, *)
@@ -137,7 +137,7 @@ func getAltitude() {
     
     let formattedAltitude = String(format: "%.2f", data.altitude)
     print("i".inverse.lightGreen.bold, terminator: " ")
-    print("The ISS is travelling at an altitude of \(formattedAltitude) km".lightGreen.bold)
+    print("The ISS is currently orbiting at an altitude of \(formattedAltitude) km".lightGreen.bold)
 }
 
 func getRandomISSFact() {
