@@ -39,7 +39,7 @@ struct Iss: ParsableCommand {
         } else if request == "fact" {
             getFact()
         } else if request == "docked" {
-            print("Currently docked...")
+            getDocked()
         }
     }
 }
@@ -170,5 +170,10 @@ func getPersonnel() {
     } catch {
         print("error")
     }
+}
+
+func getDocked() {
+    print("i".inverse.lightGreen.bold, terminator: " ")
+    print("The following vessels are currently docked with the ISS:".lightGreen.bold)
 }
 
