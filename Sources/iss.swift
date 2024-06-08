@@ -140,8 +140,30 @@ func getAltitude() {
     print("The ISS is currently orbiting at an altitude of \(formattedAltitude) km".lightGreen.bold)
 }
 
+func decode<T: Codable>(_ file: String) -> T {
+    guard let data = file.data(using: .utf8) else {
+        fatalError("Failed to load \(file) from bundle.")
+    }
+
+    let decoder = JSONDecoder()
+
+    do {
+        return try decoder.decode(T.self, from: data)
+    } catch DecodingError.keyNotFound(let key, let context) {
+        fatalError("Failed to decode \(file) from bundle due to missing key '\(key.stringValue)' – \(context.debugDescription)")
+    } catch DecodingError.typeMismatch(_, let context) {
+        fatalError("Failed to decode \(file) from bundle due to type mismatch – \(context.debugDescription)")
+    } catch DecodingError.valueNotFound(let type, let context) {
+        fatalError("Failed to decode \(file) from bundle due to missing \(type) value – \(context.debugDescription)")
+    } catch DecodingError.dataCorrupted(_) {
+        fatalError("Failed to decode \(file) from bundle because it appears to be invalid JSON.")
+    } catch {
+        fatalError("Failed to decode \(file) from bundle: \(error.localizedDescription)")
+    }
+}
+
 func getFact() {
-    let facts: [Fact] = Bundle.main.decode("issfacts.json")
+    let facts: [Fact] = decode(facts)
     print(facts.count)
 }
 
