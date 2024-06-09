@@ -199,15 +199,17 @@ func getDocked() {
     do {
         let html = HTMLParse(from: "https://en.wikipedia.org/wiki/International_Space_Station")
         let doc: Document = try SwiftSoup.parse(html)
-
+        
         guard let body = doc.body() else {
             return
         }
-
-        let docked: Elements = try body.getElementsByTag("#Currently_docked/berthed")
-        for vessel in docked {
+        
+        let vessels: Elements = try body.getElementsByClass("wikitable plainrowheaders")
+        for vessel in vessels {
             print(try vessel.text())
         }
+
+        
     } catch Exception.Error(let type, let message) {
         print(message)
         print(type)
