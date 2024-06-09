@@ -205,9 +205,8 @@ func getDocked() {
         }
         
         let vessels: Elements = try body.getElementsByClass("wikitable plainrowheaders")
-        for vessel in vessels {
-            print(try vessel.text())
-        }
+        let vessel = try vessels[0].text()
+        
 
         
     } catch Exception.Error(let type, let message) {
