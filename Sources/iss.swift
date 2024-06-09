@@ -92,24 +92,29 @@ func showLocation() {
     let location = fetchLocation()
     let lat = location.coordinate.latitude
     let long = location.coordinate.longitude
+    var cityName = ""
+    var countryName = ""
     
     print("i".inverse.lightGreen.bold, terminator: " ")
     print("The ISS is currently at latitude: \(lat), longitude: \(long).".lightGreen.bold)
     
-    var firstLocation: CLPlacemark?
-    let lastLocation = CLLocation(latitude: lat, longitude: long)
-    let geocoder = CLGeocoder()
+    let geoCoder = CLGeocoder()
+    let coords = CLLocation(latitude: lat, longitude: long)
+    
+    geoCoder.reverseGeocodeLocation(coords, completionHandler: { placemarks, error -> Void in
+        guard let placemark = placemarks?.first else { return }
         
-    geocoder.reverseGeocodeLocation(lastLocation, completionHandler: { (placemarks, error) in
-        if error == nil {
-            firstLocation = placemarks?[0]
-        } else {
-            return
+        if let city = placemark.locality {
+            cityName = city
+        }
+        
+        if let country = placemark.country {
+            countryName = country
         }
     })
     
     print("i".inverse.lightGreen.bold, terminator: " ")
-    print("It is currently over \(firstLocation?.locality ?? "error"), \(firstLocation?.country ?? "error").".lightGreen.bold)
+    print("It is currently over \(cityName), \(countryName).".lightGreen.bold)
 }
 
 @available(macOS 12, *)
