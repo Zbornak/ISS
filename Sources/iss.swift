@@ -93,7 +93,8 @@ func showLocation() {
     let lat = location.coordinate.latitude
     let long = location.coordinate.longitude
     
-    print("i".inverse.lightGreen.bold, terminator: " ")
+    print("i".inverse.lightGreen.bold, terminator: "")
+    print(" ".inverse.green.bold, terminator: " ")
     print("The ISS is currently at latitude: \(lat), longitude: \(long).".lightGreen.bold)
 }
 
@@ -110,7 +111,8 @@ func getSpeed() {
     let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
     
     let formattedSpeed = String(format: "%.2f", data.speed)
-    print("i".inverse.lightGreen.bold, terminator: " ")
+    print("i".inverse.lightGreen.bold, terminator: "")
+    print(" ".inverse.green.bold, terminator: " ")
     print("The ISS is currently travelling at a speed of \(formattedSpeed) km/h, or \((Float(formattedSpeed) ?? 0) * 0.0002777778) km/s.".lightGreen.bold)
 }
 
@@ -127,7 +129,8 @@ func getAltitude() {
     let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
     
     let formattedAltitude = String(format: "%.2f", data.altitude)
-    print("i".inverse.lightGreen.bold, terminator: " ")
+    print("i".inverse.lightGreen.bold, terminator: "")
+    print(" ".inverse.green.bold, terminator: " ")
     print("The ISS is currently orbiting at an altitude of \(formattedAltitude) km".lightGreen.bold)
 }
 
@@ -156,12 +159,14 @@ func decode<T: Codable>(_ file: String) -> T {
 func getFact() {
     let facts: [Fact] = decode(facts)
     let fact = facts.randomElement()
-    print("i".inverse.lightGreen.bold, terminator: " ")
+    print("i".inverse.lightGreen.bold, terminator: "")
+    print(" ".inverse.green.bold, terminator: " ")
     print(fact?.description.lightGreen.bold ?? "ISS facts cannot be accessed at this time")
 }
 
 func getPersonnel() {
-    print("i".inverse.lightGreen.bold, terminator: " ")
+    print("i".inverse.lightGreen.bold, terminator: "")
+    print(" ".inverse.green.bold, terminator: " ")
     print("The following personnel are currently aboard the ISS:".lightGreen.bold)
     do {
         let html = HTMLParse(from: "https://en.wikipedia.org/wiki/List_of_crew_of_the_International_Space_Station")
@@ -188,7 +193,8 @@ func getPersonnel() {
 }
 
 func getDocked() {
-    print("i".inverse.lightGreen.bold, terminator: " ")
+    print("i".inverse.lightGreen.bold, terminator: "")
+    print(" ".inverse.green.bold, terminator: " ")
     print("The following vessels are currently docked with the ISS:".lightGreen.bold)
     do {
         let html = HTMLParse(from: "https://en.wikipedia.org/wiki/International_Space_Station")
