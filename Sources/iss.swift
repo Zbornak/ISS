@@ -14,9 +14,9 @@ import MapKit
 import SGPKit
 import SwiftSoup
 
-@available(macOS 12, *)
+@available(macOS 15, *)
 @main
-struct Iss: ParsableCommand {
+struct Iss: AsyncParsableCommand {
     static let configuration = CommandConfiguration(abstract: "A cli which lets you know the current position of the International Space Station, as well as who is on board and other interesting random trivia", version: "1.0.0")
     
     @Argument(help: "Choose what ISS information you are looking for (location, speed, altitude, personnel, fact or docked)") var request: String
@@ -27,9 +27,9 @@ struct Iss: ParsableCommand {
         }
     }
     
-    mutating func run() throws {
+    mutating func run() async throws {
         if request == "location" {
-            showLocation()
+            await showLocation()
         } else if request == "speed" {
             getSpeed()
         } else if request == "altitude" {
@@ -88,14 +88,39 @@ func fetchLocation() -> CLLocation {
 }
 
 @available(macOS 12, *)
-func showLocation() {
+func showLocation() async {
     let location = fetchLocation()
     let lat = location.coordinate.latitude
     let long = location.coordinate.longitude
+    var cityName = ""
+    var countryName = ""
     
     print("i".inverse.lightGreen.bold, terminator: "")
     print(" ".inverse.green.bold, terminator: " ")
     print("The ISS is currently at latitude: \(lat), longitude: \(long).".lightGreen.bold)
+    
+    let geoCoder = CLGeocoder()
+    let coords = CLLocation(latitude: lat, longitude: long)
+    
+    do {
+        let placemarks = try await geoCoder.reverseGeocodeLocation(coords)
+        guard let placemark = placemarks.first else { return }
+        if let city = placemark.locality {
+            cityName = city
+        }
+        
+        if let country = placemark.country {
+            countryName = country
+        }
+    }
+    
+    catch {
+        print("error")
+    }
+    
+    print("i".inverse.lightGreen.bold, terminator: "")
+    print(" ".inverse.green.bold, terminator: " ")
+    print("It is currently over \(cityName), \(countryName).".lightGreen.bold)
 }
 
 @available(macOS 12, *)
