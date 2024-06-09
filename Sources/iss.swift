@@ -29,7 +29,7 @@ struct Iss: ParsableCommand {
     
     mutating func run() throws {
         if request == "location" {
-            getCoords()
+            showLocation()
         } else if request == "speed" {
             getSpeed()
         } else if request == "altitude" {
@@ -73,7 +73,7 @@ func getTLE() -> [String] {
 }
 
 @available(macOS 12, *)
-func getCoords() {
+func fetchLocation() -> CLLocation {
     let dataArray = getTLE()
     let title = dataArray[0]
     let firstLine = dataArray[1]
@@ -84,12 +84,18 @@ func getCoords() {
     
     let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
     
-    print("i".inverse.lightGreen.bold, terminator: " ")
-    print("The ISS is currently at latitude: \(data.latitude), longitude: \(data.longitude).".lightGreen.bold)
-    lookUpCurrentLocation(lat: data.latitude, long: data.longitude)
+    return CLLocation(latitude: data.latitude, longitude: data.longitude)
 }
 
-func lookUpCurrentLocation(lat: Double, long: Double) {
+@available(macOS 12, *)
+func showLocation() {
+    let location = fetchLocation()
+    let lat = location.coordinate.latitude
+    let long = location.coordinate.longitude
+    
+    print("i".inverse.lightGreen.bold, terminator: " ")
+    print("The ISS is currently at latitude: \(lat), longitude: \(long).".lightGreen.bold)
+    
     var firstLocation: CLPlacemark?
     let lastLocation = CLLocation(latitude: lat, longitude: long)
     let geocoder = CLGeocoder()
