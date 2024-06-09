@@ -205,9 +205,16 @@ func getDocked() {
         }
         
         let vessels: Elements = try body.getElementsByClass("wikitable plainrowheaders")
-        for vessel in vessels {
-            if try vessel.text().hasPrefix("Spacecraft") {
-                print(try vessel.text().lightGreen.bold)
+
+        if let table = vessels.first() {
+            if let tbody = table.children().first() {
+                let rows = tbody.children()
+                for (i, row) in rows.enumerated() {
+                    if i == 0 { continue }
+                    if let vessel = row.children().first() {
+                        print(try vessel.text().lightGreen.bold)
+                    }
+                }
             }
         }
 
