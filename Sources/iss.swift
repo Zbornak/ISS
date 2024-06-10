@@ -102,10 +102,9 @@ func showLocation() async {
     print("The ISS is currently at latitude: \(lat), longitude: \(long).".lightGreen.bold)
     
     let geoCoder = CLGeocoder()
-    let coords = CLLocation(latitude: lat, longitude: long)
     
     do {
-        let placemarks = try await geoCoder.reverseGeocodeLocation(coords)
+        let placemarks = try await geoCoder.reverseGeocodeLocation(location)
         guard let placemark = placemarks.first else { return }
         if let city = placemark.locality {
             cityName = city
