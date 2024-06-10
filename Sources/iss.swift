@@ -31,9 +31,9 @@ struct Iss: AsyncParsableCommand {
         if request == "location" {
             await getLocation()
         } else if request == "speed" {
-            getSpeed()
+            await getSpeed()
         } else if request == "altitude" {
-            getAltitude()
+            await getAltitude()
         } else if request == "personnel" {
             getPersonnel()
         } else if request == "fact" {
@@ -68,15 +68,15 @@ func HTMLParse(from: String) -> String {
     return contents
 }
 
-func getTLE() -> [String] {
+func getTLE() async -> [String] {
     let rawString = HTMLParse(from: "http://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE")
     let newArray = rawString.components(separatedBy: "\r\n")
     return newArray
 }
 
 @available(macOS 12, *)
-func interpretTLE() -> SatelliteData {
-    let dataArray = getTLE()
+func interpretTLE() async -> SatelliteData {
+    let dataArray = await getTLE()
     let title = dataArray[0]
     let firstLine = dataArray[1]
     let secondLine = dataArray[2]
@@ -89,7 +89,7 @@ func interpretTLE() -> SatelliteData {
 @available(macOS 12, *)
 func getLocation() async {
     let geoCoder = CLGeocoder()
-    let data = interpretTLE()
+    let data = await interpretTLE()
     let location = CLLocation(latitude: data.latitude, longitude: data.longitude)
     let lat = location.coordinate.latitude
     let long = location.coordinate.longitude
@@ -113,8 +113,8 @@ func getLocation() async {
 }
 
 @available(macOS 12, *)
-func getSpeed() {
-    let data = interpretTLE()
+func getSpeed() async {
+    let data = await interpretTLE()
     let formattedSpeed = String(format: "%.2f", data.speed)
     
     print("i".inverse.lightGreen.bold, terminator: "")
@@ -123,8 +123,8 @@ func getSpeed() {
 }
 
 @available(macOS 12, *)
-func getAltitude() {
-    let data = interpretTLE()
+func getAltitude() async {
+    let data = await interpretTLE()
     let formattedAltitude = String(format: "%.2f", data.altitude)
     
     print("i".inverse.lightGreen.bold, terminator: "")
