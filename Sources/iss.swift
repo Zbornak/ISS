@@ -108,10 +108,8 @@ func showLocation() async {
         if let country = placemark.country {
             countryName = country
         }
-    }
-    
-    catch {
-        print("error")
+    } catch {
+        print("Error retrieving ground location")
     }
     
     print("i".inverse.lightGreen.bold, terminator: "")
