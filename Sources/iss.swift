@@ -99,7 +99,7 @@ func showLocation() async {
     do {
         let placemarks = try await geoCoder.reverseGeocodeLocation(location)
         guard let placemark = placemarks.first else { return }
-            try await Task.sleep(nanoseconds: 1_000_000_000)
+            try await Task.sleep(nanoseconds: 1_000_000_000 / 2)
             let city = placemark.locality
             let country = placemark.country
             
