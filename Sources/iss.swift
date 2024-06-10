@@ -98,17 +98,17 @@ func showLocation() async {
     
     do {
         let placemarks = try await geoCoder.reverseGeocodeLocation(location)
+        try await Task.sleep(nanoseconds: 1_000_000_000)
         guard let placemark = placemarks.first else { return }
-            try await Task.sleep(nanoseconds: 1_000_000_000 / 2)
-            let city = placemark.locality
-            let country = placemark.country
+        let city = placemark.locality
+        let country = placemark.country
             
-            print("i".inverse.lightGreen.bold, terminator: "")
-            print(" ".inverse.green.bold, terminator: " ")
-            print("The ISS is currently at latitude: \(lat), longitude: \(long).".lightGreen.bold)
-            print("i".inverse.lightGreen.bold, terminator: "")
-            print(" ".inverse.green.bold, terminator: " ")
-            print("It is currently over \(city ?? "N/A"), \(country ?? "N/A").".lightGreen.bold)
+        print("i".inverse.lightGreen.bold, terminator: "")
+        print(" ".inverse.green.bold, terminator: " ")
+        print("The ISS is currently at latitude: \(lat), longitude: \(long).".lightGreen.bold)
+        print("i".inverse.lightGreen.bold, terminator: "")
+        print(" ".inverse.green.bold, terminator: " ")
+        print("It is currently over \(city ?? "N/A"), \(country ?? "N/A").".lightGreen.bold)
     } catch {
         print("Error retrieving ground location")
     }
