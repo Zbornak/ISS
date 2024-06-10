@@ -91,17 +91,12 @@ func fetchLocation() -> CLLocation {
 
 @available(macOS 12, *)
 func showLocation() async {
+    let geoCoder = CLGeocoder()
     let location = fetchLocation()
     let lat = location.coordinate.latitude
     let long = location.coordinate.longitude
     var cityName = ""
     var countryName = ""
-    
-    print("i".inverse.lightGreen.bold, terminator: "")
-    print(" ".inverse.green.bold, terminator: " ")
-    print("The ISS is currently at latitude: \(lat), longitude: \(long).".lightGreen.bold)
-    
-    let geoCoder = CLGeocoder()
     
     do {
         let placemarks = try await geoCoder.reverseGeocodeLocation(location)
@@ -119,6 +114,9 @@ func showLocation() async {
         print("error")
     }
     
+    print("i".inverse.lightGreen.bold, terminator: "")
+    print(" ".inverse.green.bold, terminator: " ")
+    print("The ISS is currently at latitude: \(lat), longitude: \(long).".lightGreen.bold)
     print("i".inverse.lightGreen.bold, terminator: "")
     print(" ".inverse.green.bold, terminator: " ")
     print("It is currently over \(cityName), \(countryName).".lightGreen.bold)
