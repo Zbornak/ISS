@@ -28,20 +28,15 @@ struct Iss: AsyncParsableCommand {
     }
     
     mutating func run() async throws {
-        if request == "location" {
-            await showLocation()
-        } else if request == "speed" {
-            getSpeed()
-        } else if request == "altitude" {
-            getAltitude()
-        } else if request == "personnel" {
-            getPersonnel()
-        } else if request == "fact" {
-            getFact()
-        } else if request == "docked" {
-            getDocked()
-        } else if request == "image" {
-            getImage()
+        switch request {
+        case "location": await showLocation()
+        case "speed": getSpeed()
+        case "altitude": getAltitude()
+        case "personnel": getPersonnel()
+        case "fact": getFact()
+        case "docked": getDocked()
+        case "image": getImage()
+        default: print("Please choose a valid request (location, speed, altitude, personnel, fact or docked)")
         }
     }
 }
