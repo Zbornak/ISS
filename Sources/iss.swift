@@ -95,29 +95,23 @@ func showLocation() async {
     let location = fetchLocation()
     let lat = location.coordinate.latitude
     let long = location.coordinate.longitude
-    var cityName = ""
-    var countryName = ""
     
     do {
         let placemarks = try await geoCoder.reverseGeocodeLocation(location)
         guard let placemark = placemarks.first else { return }
-        if let city = placemark.locality {
-            cityName = city
-        }
+        let city = placemark.locality
+        let country = placemark.country
         
-        if let country = placemark.country {
-            countryName = country
-        }
+        print("i".inverse.lightGreen.bold, terminator: "")
+        print(" ".inverse.green.bold, terminator: " ")
+        print("The ISS is currently at latitude: \(lat), longitude: \(long).".lightGreen.bold)
+        print("i".inverse.lightGreen.bold, terminator: "")
+        print(" ".inverse.green.bold, terminator: " ")
+        print("It is currently over \(city!), \(country!).".lightGreen.bold)
+         
     } catch {
         print("Error retrieving ground location")
     }
-    
-    print("i".inverse.lightGreen.bold, terminator: "")
-    print(" ".inverse.green.bold, terminator: " ")
-    print("The ISS is currently at latitude: \(lat), longitude: \(long).".lightGreen.bold)
-    print("i".inverse.lightGreen.bold, terminator: "")
-    print(" ".inverse.green.bold, terminator: " ")
-    print("It is currently over \(cityName), \(countryName).".lightGreen.bold)
 }
 
 @available(macOS 12, *)
