@@ -80,7 +80,6 @@ func interpretTLE() -> SatelliteData {
     let title = dataArray[0]
     let firstLine = dataArray[1]
     let secondLine = dataArray[2]
-    
     let tle = TLE(title: title, firstLine: firstLine, secondLine: secondLine)
     let interpreter = TLEInterpreter()
     
@@ -158,6 +157,7 @@ func decode<T: Codable>(_ file: String) -> T {
 func getFact() {
     let facts: [Fact] = decode(facts)
     let fact = facts.randomElement()
+    
     print("i".inverse.lightGreen.bold, terminator: "")
     print(" ".inverse.green.bold, terminator: " ")
     print(fact?.description.lightGreen.bold ?? "ISS facts cannot be accessed at this time")
@@ -216,8 +216,6 @@ func getDocked() {
                 }
             }
         }
-
-        
     } catch Exception.Error(let type, let message) {
         print(message)
         print(type)
@@ -225,7 +223,6 @@ func getDocked() {
     } catch {
         print("error")
     }
-    
 }
 
 func getImage() {
