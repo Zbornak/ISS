@@ -28,15 +28,20 @@ struct Iss: AsyncParsableCommand {
     }
     
     mutating func run() async throws {
-        switch request {
-        case "location": await showLocation()
-        case "speed": getSpeed()
-        case "altitude": getAltitude()
-        case "personnel": getPersonnel()
-        case "fact": getFact()
-        case "docked": getDocked()
-        case "image": getImage()
-        default: print("Please choose a valid request (location, speed, altitude, personnel, fact or docked)")
+        if request == "location" {
+            await getLocation()
+        } else if request == "speed" {
+            getSpeed()
+        } else if request == "altitude" {
+            getAltitude()
+        } else if request == "personnel" {
+            getPersonnel()
+        } else if request == "fact" {
+            getFact()
+        } else if request == "docked" {
+            getDocked()
+        } else if request == "image" {
+            getImage()
         }
     }
 }
@@ -70,7 +75,7 @@ func getTLE() -> [String] {
 }
 
 @available(macOS 12, *)
-func fetchLocation() -> CLLocation {
+func interpretTLE() -> SatelliteData {
     let dataArray = getTLE()
     let title = dataArray[0]
     let firstLine = dataArray[1]
@@ -79,15 +84,14 @@ func fetchLocation() -> CLLocation {
     let tle = TLE(title: title, firstLine: firstLine, secondLine: secondLine)
     let interpreter = TLEInterpreter()
     
-    let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
-    
-    return CLLocation(latitude: data.latitude, longitude: data.longitude)
+    return interpreter.satelliteData(from: tle, date: .now)
 }
 
 @available(macOS 12, *)
-func showLocation() async {
+func getLocation() async {
     let geoCoder = CLGeocoder()
-    let location = fetchLocation()
+    let data = interpretTLE()
+    let location = CLLocation(latitude: data.latitude, longitude: data.longitude)
     let lat = location.coordinate.latitude
     let long = location.coordinate.longitude
     
@@ -111,17 +115,9 @@ func showLocation() async {
 
 @available(macOS 12, *)
 func getSpeed() {
-    let dataArray = getTLE()
-    let title = dataArray[0]
-    let firstLine = dataArray[1]
-    let secondLine = dataArray[2]
-    
-    let tle = TLE(title: title, firstLine: firstLine, secondLine: secondLine)
-    let interpreter = TLEInterpreter()
-    
-    let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
-    
+    let data = interpretTLE()
     let formattedSpeed = String(format: "%.2f", data.speed)
+    
     print("i".inverse.lightGreen.bold, terminator: "")
     print(" ".inverse.green.bold, terminator: " ")
     print("The ISS is currently travelling at a speed of \(formattedSpeed) km/h, or \((Float(formattedSpeed) ?? 0) * 0.0002777778) km/s.".lightGreen.bold)
@@ -129,17 +125,9 @@ func getSpeed() {
 
 @available(macOS 12, *)
 func getAltitude() {
-    let dataArray = getTLE()
-    let title = dataArray[0]
-    let firstLine = dataArray[1]
-    let secondLine = dataArray[2]
-    
-    let tle = TLE(title: title, firstLine: firstLine, secondLine: secondLine)
-    let interpreter = TLEInterpreter()
-    
-    let data: SatelliteData = interpreter.satelliteData(from: tle, date: .now)
-    
+    let data = interpretTLE()
     let formattedAltitude = String(format: "%.2f", data.altitude)
+    
     print("i".inverse.lightGreen.bold, terminator: "")
     print(" ".inverse.green.bold, terminator: " ")
     print("The ISS is currently orbiting at an altitude of \(formattedAltitude) km".lightGreen.bold)
@@ -267,5 +255,9 @@ func getImage() {
                                                  - @%
                                                    *:*#
     """.lightGreen.bold)
+}
+
+func chooseAction(request: String) async {
+    
 }
 
