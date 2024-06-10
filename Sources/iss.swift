@@ -22,7 +22,7 @@ struct Iss: AsyncParsableCommand {
     @Argument(help: "Choose what ISS information you are looking for (location, speed, altitude, personnel, fact or docked)") var request: String
     
     mutating func validate() throws {
-        guard request == "location" || request == "speed" || request == "altitude" || request == "personnel" || request == "fact" || request == "docked" else {
+        guard request == "location" || request == "speed" || request == "altitude" || request == "personnel" || request == "fact" || request == "docked" || request == "image" else {
             throw ValidationError("Please choose a valid request (location, speed, altitude, personnel, fact or docked)")
         }
     }
@@ -40,6 +40,8 @@ struct Iss: AsyncParsableCommand {
             getFact()
         } else if request == "docked" {
             getDocked()
+        } else if request == "image" {
+            getImage()
         }
     }
 }
@@ -252,5 +254,34 @@ func getDocked() {
         print("error")
     }
     
+}
+
+func getImage() {
+    print("""
+                                             %    *#         %
+                                             -...-++-:-..:..=+-+*           **           %:
+                      #*@@                   ===+#+=#==++*+*%+ +=:         *@#*@+%+    *%%*@@=#
+      #@#            *@+%#%                      *+#+                     #*%#@*+%%#@ %*#*#%+@%##=
+         @%%*       *@%**%%%*             :+-@-+#*=*=                    %###@##*%@=%#**%%%@@%%%
+            *##    +*@##*@%                *=*@@@++#+  ++*  :         #  *#*@=%**** +@%#%@@@#%
+             * #+#%=###%@##%@%+@*%##========#--=+-+=*-#+++*#@*%:@@%@##++*+=*%-+#%-@#++:* +%%
+                #*#*  %@%*@##=@ *+#*:=======   ##%@*--+#++--=== ==  %%%#==%%%%% %#@++@%#%@
+                 +++#@      +++@     -=====+  =@+%+%#+*#=++-=-= ==    %%+=+#%% +%%+%*@#@
+                 ++=   +    ++#  +   --#====    * *#*  *=@-----#-=      *+:%       ++%
+                 +++        +++      #%+-==:     @ ++   = ==-==*==      +++        +++
+                 ++*        +++      --#-@:=@     +-*     -----@-=      +++        +++
+                 =--                 =-=-.@:@  @@%=*=#*@  *=======
+                                     --@---.-     =+=     *-:--===
+                                     -:=-=-=*     =*=     =---%*-=#
+                                     -: -====     -=      =====@
+                                          ##*#%%%#-#=#%%%%:%%
+                                                  *++#*#%#*%%#*
+                                                 %%%# %
+                                                  #**
+                                                  #%+
+                                                   @.
+                                                 - @%
+                                                   *:*#
+    """.lightGreen.bold)
 }
 
