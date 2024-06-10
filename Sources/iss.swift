@@ -108,7 +108,7 @@ func showLocation() async {
             print("The ISS is currently at latitude: \(lat), longitude: \(long).".lightGreen.bold)
             print("i".inverse.lightGreen.bold, terminator: "")
             print(" ".inverse.green.bold, terminator: " ")
-            print("It is currently over \(city!), \(country!).".lightGreen.bold)
+            print("It is currently over \(city ?? "N/A"), \(country ?? "N/A").".lightGreen.bold)
     } catch {
         print("Error retrieving ground location")
     }
