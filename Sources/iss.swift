@@ -21,7 +21,7 @@ struct Iss: AsyncParsableCommand {
     
     @Argument(help: "Choose what ISS information you are looking for (location, speed, altitude, personnel, fact or docked)") var request: String
     
-    mutating func validate() async throws {
+    mutating func validate() throws {
         guard request == "location" || request == "speed" || request == "altitude" || request == "personnel" || request == "fact" || request == "docked" || request == "image" else {
             throw ValidationError("Please choose a valid request (location, speed, altitude, personnel, fact or docked)")
         }
@@ -31,22 +31,22 @@ struct Iss: AsyncParsableCommand {
         if request == "location" {
             await getLocation()
         } else if request == "speed" {
-            await getSpeed()
+            getSpeed()
         } else if request == "altitude" {
-            await getAltitude()
+            getAltitude()
         } else if request == "personnel" {
-            await getPersonnel()
+            getPersonnel()
         } else if request == "fact" {
             getFact()
         } else if request == "docked" {
-            await getDocked()
+            getDocked()
         } else if request == "image" {
             getImage()
         }
     }
 }
 
-func HTMLParse(from: String) async -> String {
+func HTMLParse(from: String) -> String {
     var contents = ""
     
     if let url = URL(string: from) {
@@ -68,15 +68,15 @@ func HTMLParse(from: String) async -> String {
     return contents
 }
 
-func getTLE() async -> [String] {
-    let rawString = await HTMLParse(from: "http://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE")
+func getTLE() -> [String] {
+    let rawString = HTMLParse(from: "http://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE")
     let newArray = rawString.components(separatedBy: "\r\n")
     return newArray
 }
 
 @available(macOS 12, *)
-func interpretTLE() async -> SatelliteData {
-    let dataArray = await getTLE()
+func interpretTLE() -> SatelliteData {
+    let dataArray = getTLE()
     let title = dataArray[0]
     let firstLine = dataArray[1]
     let secondLine = dataArray[2]
@@ -89,7 +89,7 @@ func interpretTLE() async -> SatelliteData {
 @available(macOS 12, *)
 func getLocation() async {
     let geoCoder = CLGeocoder()
-    let data = await interpretTLE()
+    let data = interpretTLE()
     let location = CLLocation(latitude: data.latitude, longitude: data.longitude)
     let lat = location.coordinate.latitude
     let long = location.coordinate.longitude
@@ -113,8 +113,8 @@ func getLocation() async {
 }
 
 @available(macOS 12, *)
-func getSpeed() async {
-    let data = await interpretTLE()
+func getSpeed() {
+    let data = interpretTLE()
     let formattedSpeed = String(format: "%.2f", data.speed)
     
     print("i".inverse.lightGreen.bold, terminator: "")
@@ -123,8 +123,8 @@ func getSpeed() async {
 }
 
 @available(macOS 12, *)
-func getAltitude() async {
-    let data = await interpretTLE()
+func getAltitude() {
+    let data = interpretTLE()
     let formattedAltitude = String(format: "%.2f", data.altitude)
     
     print("i".inverse.lightGreen.bold, terminator: "")
@@ -163,12 +163,12 @@ func getFact() {
     print(fact?.description.lightGreen.bold ?? "ISS facts cannot be accessed at this time")
 }
 
-func getPersonnel() async {
+func getPersonnel() {
     print("i".inverse.lightGreen.bold, terminator: "")
     print(" ".inverse.green.bold, terminator: " ")
     print("The following personnel are currently aboard the ISS:".lightGreen.bold)
     do {
-        let html = await HTMLParse(from: "https://en.wikipedia.org/wiki/List_of_crew_of_the_International_Space_Station")
+        let html = HTMLParse(from: "https://en.wikipedia.org/wiki/List_of_crew_of_the_International_Space_Station")
         let doc: Document = try SwiftSoup.parse(html)
         
         guard let body = doc.body() else {
@@ -191,12 +191,12 @@ func getPersonnel() async {
     }
 }
 
-func getDocked() async {
+func getDocked() {
     print("i".inverse.lightGreen.bold, terminator: "")
     print(" ".inverse.green.bold, terminator: " ")
     print("The following vessels are currently docked with the ISS:".lightGreen.bold)
     do {
-        let html = await HTMLParse(from: "https://en.wikipedia.org/wiki/International_Space_Station")
+        let html = HTMLParse(from: "https://en.wikipedia.org/wiki/International_Space_Station")
         let doc: Document = try SwiftSoup.parse(html)
         
         guard let body = doc.body() else {
@@ -252,9 +252,5 @@ func getImage() {
                                                  - @%
                                                    *:*#
     """.lightGreen.bold)
-}
-
-func chooseAction(request: String) async {
-    
 }
 
